@@ -15,3 +15,9 @@ show-logs:
 
 show-logs-api:
 	docker compose -f local.yml logs api
+
+show-logs-db:
+	docker compose -f local.yml logs db
+
+user:
+	docker run --rm bidding-platform-api whoami
