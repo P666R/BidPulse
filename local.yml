@@ -6,6 +6,7 @@ services:
       dockerfile: ./docker/local/express/Dockerfile
     volumes:
       - /app/node_modules
+      - /app/logs
       - .:/app
     ports:
       - '${PORT}:${PORT}'
@@ -16,6 +17,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
+      FORCE_COLOR: 1
     depends_on:
       - db
     networks:

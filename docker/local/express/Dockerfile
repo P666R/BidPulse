@@ -19,9 +19,11 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY --chown=bidding:bidding . ${APP_HOME}
+COPY . ${APP_HOME}
 
-RUN chown bidding:bidding ${APP_HOME}
+RUN mkdir -p ${APP_HOME}/logs \
+    && chown -R bidding:bidding ${APP_HOME}/logs \
+    && chown -R bidding:bidding ${APP_HOME}
 
 USER bidding
 
