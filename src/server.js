@@ -1,10 +1,12 @@
-import chalk from 'chalk';
-import cookieParser from 'cookie-parser';
 import 'dotenv/config';
-import express from 'express';
+import chalk from 'chalk';
 import morgan from 'morgan';
+import express from 'express';
+import cookieParser from 'cookie-parser';
 
-import { systemLogs, morganMiddleware } from './utils/logger.js';
+import authRoutes from './routes/AuthRoutes.js';
+import { systemLogs, morganMiddleware } from './utils/Logger.js';
+import { errorHandler, notFound } from './middleware/ErrorMiddleware.js';
 
 const app = express();
 
@@ -22,6 +24,11 @@ app.get('/api/v1/test', (req, res) => {
     message: 'API is running...',
   });
 });
+
+app.use('/api/v1/auth', authRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 

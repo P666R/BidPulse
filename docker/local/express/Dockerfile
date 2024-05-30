@@ -12,19 +12,14 @@ ARG APP_HOME=/app
 
 WORKDIR ${APP_HOME}
 
-RUN addgroup --system bidding \
-    && adduser --system --ingroup bidding bidding
-
 COPY package*.json ./
 
 RUN npm install
 
 COPY . ${APP_HOME}
 
-RUN mkdir -p ${APP_HOME}/logs \
-    && chown -R bidding:bidding ${APP_HOME}/logs \
-    && chown -R bidding:bidding ${APP_HOME}
-
-USER bidding
+RUN npm install -g prisma \
+    && npx prisma generate \
+    && mkdir -p ${APP_HOME}/logs
 
 CMD ["npm", "run", "dev"]
