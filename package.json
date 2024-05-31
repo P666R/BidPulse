@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "dev:migrate": "npx prisma migrate dev --name init && npm run dev"
   },
   "keywords": [],
   "author": "PRoy",

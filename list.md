@@ -1,14 +1,15 @@
 - 📂 __bidding\-platform__
    - 📄 [Makefile](Makefile)
    - 📂 __docker__
-     - 📂 __local__
-       - 📂 __express__
-         - 📄 [Dockerfile](docker/local/express/Dockerfile)
+     - 📂 __development__
+       - 📄 [Dockerfile](docker/development/Dockerfile)
      - 📂 __production__
+   - 📄 [docker\-compose.yml](docker-compose.yml)
+   - 📄 [ecosystem.config.cjs](ecosystem.config.cjs)
    - 📄 [list.md](list.md)
-   - 📄 [local.yml](local.yml)
    - 📂 __logs__
      - 📄 [combined\-2024\-05\-29.log](logs/combined-2024-05-29.log)
+     - 📄 [combined\-2024\-05\-31.log](logs/combined-2024-05-31.log)
      - 📄 [error.log](logs/error.log)
      - 📄 [exception.log](logs/exception.log)
      - 📄 [rejections.log](logs/rejections.log)
@@ -17,17 +18,15 @@
    - 📄 [package.json](package.json)
    - 📂 __prisma__
      - 📂 __migrations__
-       - 📂 __20240529060203\_init__
-         - 📄 [migration.sql](prisma/migrations/20240529060203_init/migration.sql)
-       - 📂 __20240529173311\_update\_schema__
-         - 📄 [migration.sql](prisma/migrations/20240529173311_update_schema/migration.sql)
-       - 📂 __20240529200649\_update\_schema\_1__
-         - 📄 [migration.sql](prisma/migrations/20240529200649_update_schema_1/migration.sql)
+       - 📂 __20240531105157\_init__
+         - 📄 [migration.sql](prisma/migrations/20240531105157_init/migration.sql)
        - 📄 [migration\_lock.toml](prisma/migrations/migration_lock.toml)
      - 📄 [schema.prisma](prisma/schema.prisma)
    - 📂 __src__
      - 📂 __config__
        - 📄 [index.js](src/config/index.js)
+     - 📂 __constants__
+       - 📄 [index.js](src/constants/index.js)
      - 📂 __controllers__
        - 📄 [AuthController.js](src/controllers/AuthController.js)
        - 📄 [BidController.js](src/controllers/BidController.js)
@@ -37,16 +36,12 @@
        - 📄 [AuthMiddleware.js](src/middleware/AuthMiddleware.js)
        - 📄 [ErrorMiddleware.js](src/middleware/ErrorMiddleware.js)
        - 📄 [RateLimitMiddleware.js](src/middleware/RateLimitMiddleware.js)
-     - 📂 __models__
-       - 📄 [Bid.js](src/models/Bid.js)
-       - 📄 [Item.js](src/models/Item.js)
-       - 📄 [Notification.js](src/models/Notification.js)
-       - 📄 [User.js](src/models/User.js)
-     - 📂 __repositories__
-       - 📄 [AuthRespository.js](src/repositories/AuthRespository.js)
-       - 📄 [BidRepository.js](src/repositories/BidRepository.js)
-       - 📄 [ItemRepository.js](src/repositories/ItemRepository.js)
-       - 📄 [NotificationRepository.js](src/repositories/NotificationRepository.js)
+       - 📄 [RoleMiddleware.js](src/middleware/RoleMiddleware.js)
+     - 📂 __repository__
+       - 📄 [AuthRepository.js](src/repository/AuthRepository.js)
+       - 📄 [BidRepository.js](src/repository/BidRepository.js)
+       - 📄 [ItemRepository.js](src/repository/ItemRepository.js)
+       - 📄 [NotificationRepository.js](src/repository/NotificationRepository.js)
      - 📂 __routes__
        - 📄 [AuthRoutes.js](src/routes/AuthRoutes.js)
        - 📄 [BidRoutes.js](src/routes/BidRoutes.js)
@@ -62,7 +57,7 @@
        - 📄 [BiddingSocket.js](src/sockets/BiddingSocket.js)
      - 📂 __utils__
        - 📄 [Logger.js](src/utils/Logger.js)
-       - 📄 [Validators.js](src/utils/Validators.js)
+       - 📄 [Validator.js](src/utils/Validator.js)
    - 📂 __tests__
      - 📄 [auth.test.js](tests/auth.test.js)
      - 📄 [bid.test.js](tests/bid.test.js)

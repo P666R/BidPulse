@@ -1,23 +1,41 @@
 build:
-	docker compose -f local.yml up --build -d --remove-orphans
+	docker compose -f docker-compose.yml up --build -d --remove-orphans
 
 up:
-	docker compose -f local.yml up -d
+	docker compose -f docker-compose.yml up -d
 
 down:
-	docker compose -f local.yml down
+	docker compose -f docker-compose.yml down
 
 down-v:
-	docker compose -f local.yml down -v
+	docker compose -f docker-compose.yml down -v
 
 show-logs:
-	docker compose -f local.yml logs
+	docker compose -f docker-compose.yml logs
 
-show-logs-api:
-	docker compose -f local.yml logs api
+show-logs-app:
+	docker compose -f docker-compose.yml logs app
 
 show-logs-db:
-	docker compose -f local.yml logs db
+	docker compose -f docker-compose.yml logs db
+
+migrate:
+	docker compose exec app npx prisma migrate dev --name init
+	
+generate:
+	docker compose exec app npx prisma generate
+
+sh-app:
+	docker exec -it bidding-platform-app sh
+
+sh-db:
+	docker exec -it bidding-platform-db sh
+
+sh-adminer:
+	docker exec -it bidding-platform-adminer sh
+
+clean:
+	docker system prune
 
 user:
-	docker run --rm bidding-platform-api whoami
+	docker run --rm bidding-platform-app whoami

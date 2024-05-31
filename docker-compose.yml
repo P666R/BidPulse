@@ -1,0 +1,50 @@
+services:
+  app:
+    container_name: bidding-platform-app
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/development/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - FORCE_COLOR=1
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    networks:
+      - bidding-platform-network
+
+  db:
+    container_name: bidding-platform-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - '3307:3306'
+    networks:
+      - bidding-platform-network
+
+  adminer:
+    container_name: bidding-platform-adminer
+    image: adminer
+    ports:
+      - '8080:8080'
+    networks:
+      - bidding-platform-network
+
+volumes:
+  db_data:
+
+networks:
+  bidding-platform-network:
+    driver: bridge
