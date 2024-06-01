@@ -2,9 +2,9 @@ import prisma from '../config/index.js';
 import { PAGINATION } from '../constants/index.js';
 
 class ItemRepository {
-  static async createItem(data) {
-    data.currentPrice = data.startingPrice;
-    return prisma.item.create({ data });
+  static async createItem(itemData) {
+    itemData.currentPrice = itemData.startingPrice;
+    return prisma.item.create({ data: itemData });
   }
 
   static async getItem(itemId) {

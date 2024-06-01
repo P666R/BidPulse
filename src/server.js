@@ -6,6 +6,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 
 import http from 'http';
+import path from 'path';
 import { Server as SocketIOServer } from 'socket.io';
 
 import authRoutes from './routes/AuthRoutes.js';
@@ -26,6 +27,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use(morganMiddleware);
 
 app.get('/api/v1/test', (req, res) => {

@@ -1,16 +1,24 @@
 import asyncHandler from 'express-async-handler';
 import ItemService from '../services/ItemService.js';
+import upload from '../middleware/MulterMiddleware.js';
 
 class ItemController {
-  static createItem = asyncHandler(async (req, res, next) => {
-    const item = await ItemService.createItem(req.body);
-    res.status(201).json({
-      success: true,
-      data: {
-        item,
-      },
-    });
-  });
+  static createItem = [
+    upload.single('image'),
+    asyncHandler(async (req, res, next) => {
+      const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+      req.body = { ...req.body, imageUrl };
+
+      const item = await ItemService.createItem(req.body);
+      res.status(201).json({
+        success: true,
+        data: {
+          item,
+        },
+      });
+    }),
+  ];
 
   static getItem = asyncHandler(async (req, res, next) => {
     const item = await ItemService.getItem(req.params.id);

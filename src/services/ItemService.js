@@ -1,8 +1,8 @@
 import ItemRepository from '../repository/ItemRepository.js';
 
 class ItemService {
-  static async createItem(data) {
-    return ItemRepository.createItem(data);
+  static async createItem(itemData) {
+    return ItemRepository.createItem(itemData);
   }
 
   static async getItem(itemId) {
@@ -14,8 +14,8 @@ class ItemService {
     return ItemRepository.getAllItems({ search, status, page, limit });
   }
 
-  static async updateItem(itemId, data) {
-    return ItemRepository.updateItem(itemId, data);
+  static async updateItem(itemId, itemData) {
+    return ItemRepository.updateItem(itemId, itemData);
   }
 
   static async deleteItem(itemId) {

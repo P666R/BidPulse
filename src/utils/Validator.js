@@ -73,6 +73,7 @@ export const itemSchema = z.object({
   startingPrice: startingPriceSchema,
   currentPrice: startingPriceSchema.optional(),
   endTime: endTimeSchema,
+  imageUrl: z.string().url({ message: 'Invalid URL' }).optional(),
 });
 
 // Items query parameters validation schema
