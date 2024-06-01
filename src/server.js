@@ -9,6 +9,7 @@ import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 
 import authRoutes from './routes/AuthRoutes.js';
+import itemRoutes from './routes/ItemRoutes.js';
 import BiddingSocket from './sockets/BiddingSocket.js';
 import { systemLogs, morganMiddleware } from './utils/Logger.js';
 import { errorHandler, notFound } from './middleware/ErrorMiddleware.js';
@@ -34,6 +35,7 @@ app.get('/api/v1/test', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/items', itemRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

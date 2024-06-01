@@ -1,7 +1,9 @@
 import prisma from '../config/index.js';
+import { PAGINATION } from '../constants/index.js';
 
 class ItemRepository {
   static async createItem(data) {
+    data.currentPrice = data.startingPrice;
     return prisma.item.create({ data });
   }
 
@@ -9,8 +11,29 @@ class ItemRepository {
     return prisma.item.findUnique({ where: { id: itemId } });
   }
 
-  static async getAllItems() {
-    return prisma.item.findMany();
+  static async getAllItems({
+    search,
+    status,
+    page = PAGINATION.PAGE,
+    limit = PAGINATION.LIMIT,
+  }) {
+    const where = {};
+
+    if (search) {
+      where.name = { contains: search };
+    }
+
+    if (status) {
+      where.status = status;
+    }
+
+    const items = await prisma.item.findMany({
+      where,
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+
+    return items;
   }
 
   static async updateItem(itemId, data) {

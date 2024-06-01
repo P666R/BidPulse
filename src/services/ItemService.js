@@ -9,8 +9,9 @@ class ItemService {
     return ItemRepository.getItem(itemId);
   }
 
-  static async getAllItems() {
-    return ItemRepository.getAllItems();
+  static async getAllItems(queryParams) {
+    const { search, status, page, limit } = queryParams;
+    return ItemRepository.getAllItems({ search, status, page, limit });
   }
 
   static async updateItem(itemId, data) {

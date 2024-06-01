@@ -23,7 +23,7 @@ class ItemController {
   });
 
   static getAllItems = asyncHandler(async (req, res, next) => {
-    const items = await ItemService.getAllItems();
+    const items = await ItemService.getAllItems(req.query);
     res.status(200).json({
       success: true,
       data: {
