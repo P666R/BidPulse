@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import morgan from 'morgan';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import favicon from 'serve-favicon';
 
 import http from 'http';
 import path from 'path';
@@ -13,9 +14,12 @@ import authRoutes from './routes/AuthRoutes.js';
 import itemRoutes from './routes/ItemRoutes.js';
 import BiddingSocket from './sockets/BiddingSocket.js';
 import { systemLogs, morganMiddleware } from './utils/Logger.js';
-import { errorHandler, notFound } from './middleware/ErrorMiddleware.js';
+import { notFound, errorHandler } from './middleware/ErrorMiddleware.js';
 
 const app = express();
+console.log(path.join(process.cwd(), 'public', 'favicon.ico'));
+app.use(favicon(path.join(process.cwd(), 'public', 'favicon.ico')));
+
 const server = http.createServer(app);
 const io = new SocketIOServer(server);
 

@@ -5,11 +5,12 @@
        - 📄 [Dockerfile](docker/development/Dockerfile)
      - 📂 __production__
    - 📄 [docker\-compose.yml](docker-compose.yml)
-   - 📄 [ecosystem.config.cjs](ecosystem.config.cjs)
    - 📄 [list.md](list.md)
    - 📂 __logs__
      - 📄 [combined\-2024\-05\-29.log](logs/combined-2024-05-29.log)
      - 📄 [combined\-2024\-05\-31.log](logs/combined-2024-05-31.log)
+     - 📄 [combined\-2024\-06\-01.log](logs/combined-2024-06-01.log)
+     - 📄 [combined\-2024\-06\-02.log](logs/combined-2024-06-02.log)
      - 📄 [error.log](logs/error.log)
      - 📄 [exception.log](logs/exception.log)
      - 📄 [rejections.log](logs/rejections.log)
@@ -18,8 +19,8 @@
    - 📄 [package.json](package.json)
    - 📂 __prisma__
      - 📂 __migrations__
-       - 📂 __20240531105157\_init__
-         - 📄 [migration.sql](prisma/migrations/20240531105157_init/migration.sql)
+       - 📂 __20240602041208\_init__
+         - 📄 [migration.sql](prisma/migrations/20240602041208_init/migration.sql)
        - 📄 [migration\_lock.toml](prisma/migrations/migration_lock.toml)
      - 📄 [schema.prisma](prisma/schema.prisma)
    - 📂 __src__
@@ -32,9 +33,13 @@
        - 📄 [BidController.js](src/controllers/BidController.js)
        - 📄 [ItemController.js](src/controllers/ItemController.js)
        - 📄 [NotificationController.js](src/controllers/NotificationController.js)
+     - 📂 __helpers__
+       - 📄 [AppError.js](src/helpers/AppError.js)
+       - 📄 [EmailTransport.js](src/helpers/EmailTransport.js)
      - 📂 __middleware__
        - 📄 [AuthMiddleware.js](src/middleware/AuthMiddleware.js)
        - 📄 [ErrorMiddleware.js](src/middleware/ErrorMiddleware.js)
+       - 📄 [MulterMiddleware.js](src/middleware/MulterMiddleware.js)
        - 📄 [RateLimitMiddleware.js](src/middleware/RateLimitMiddleware.js)
        - 📄 [RoleMiddleware.js](src/middleware/RoleMiddleware.js)
      - 📂 __repository__
@@ -57,10 +62,21 @@
        - 📄 [BiddingSocket.js](src/sockets/BiddingSocket.js)
      - 📂 __utils__
        - 📄 [Logger.js](src/utils/Logger.js)
+       - 📄 [SendEmail.js](src/utils/SendEmail.js)
        - 📄 [Validator.js](src/utils/Validator.js)
+       - 📂 __emails__
+         - 📂 __template__
+           - 📄 [accountVerification.handlebars](src/utils/emails/template/accountVerification.handlebars)
+           - 📄 [requestResetPassword.handlebars](src/utils/emails/template/requestResetPassword.handlebars)
+           - 📄 [resetPassword.handlebars](src/utils/emails/template/resetPassword.handlebars)
+           - 📄 [welcome.handlebars](src/utils/emails/template/welcome.handlebars)
    - 📂 __tests__
      - 📄 [auth.test.js](tests/auth.test.js)
      - 📄 [bid.test.js](tests/bid.test.js)
      - 📄 [item.test.js](tests/item.test.js)
      - 📄 [notification.test.js](tests/notification.test.js)
+   - 📂 __uploads__
+     - 📄 [55573248\-af99\-42d2\-884d\-dbc5cb0f7443.jpeg](uploads/55573248-af99-42d2-884d-dbc5cb0f7443.jpeg)
+     - 📄 [702787f6\-83e6\-4d14\-92d9\-fe64bd2a28d7.jpeg](uploads/702787f6-83e6-4d14-92d9-fe64bd2a28d7.jpeg)
+     - 📄 [e37ec74c\-1460\-4ca8\-8a24\-2a500fdfada7.jpeg](uploads/e37ec74c-1460-4ca8-8a24-2a500fdfada7.jpeg)
 

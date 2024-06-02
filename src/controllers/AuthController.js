@@ -8,22 +8,45 @@ function exclude(user, keys) {
 }
 
 class AuthController {
-  static registerUser = asyncHandler(async (req, res, next) => {
-    let user = await AuthService.register(req.body);
-    user = exclude(user, ['password', 'createdAt']);
-
-    res.status(201).json({
-      success: true,
-      data: {
-        user,
-      },
-    });
+  static register = asyncHandler(async (req, res) => {
+    const result = await AuthService.register(req.body);
+    res.status(201).json({ status: 'success', ...result });
   });
 
-  static loginUser = asyncHandler(async (req, res, next) => {
+  static verify = asyncHandler(async (req, res) => {
+    const { emailToken, userId } = req.params;
+    await AuthService.verify(emailToken, userId);
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Email verified successfully' });
+  });
+
+  static resendVerificationEmail = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const result = await AuthService.resendVerificationEmail(email);
+    res.status(200).json({ status: 'success', ...result });
+  });
+
+  static requestPasswordReset = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const result = await AuthService.requestPasswordReset(email);
+    res.status(200).json({ status: 'success', ...result });
+  });
+
+  static resetPassword = asyncHandler(async (req, res) => {
+    const { emailToken, userId } = req.query;
+    const { password } = req.body;
+    const result = await AuthService.resetPassword(
+      password,
+      userId,
+      emailToken,
+    );
+    res.status(200).json({ status: 'success', ...result });
+  });
+
+  static login = asyncHandler(async (req, res) => {
     const { token, user } = await AuthService.login(req.body);
     const userWithoutPassword = exclude(user, ['password', 'createdAt']);
-
     res
       .cookie('jwt', token, {
         httpOnly: true,
@@ -31,36 +54,20 @@ class AuthController {
         secure: true,
         sameSite: 'none',
       })
-      .json({
-        success: true,
-        data: {
-          user: userWithoutPassword,
-        },
-      });
+      .json({ status: 'success', data: { user: userWithoutPassword } });
   });
 
-  static getProfile = asyncHandler(async (req, res, next) => {
-    let user = await AuthService.getProfile(req.user.id);
+  static profile = asyncHandler(async (req, res) => {
+    let user = await AuthService.profile(req.user.id);
     user = exclude(user, ['password', 'createdAt']);
-
-    res.status(200).json({
-      success: true,
-      data: {
-        user,
-      },
-    });
+    res.status(200).json({ success: true, data: { user } });
   });
 
-  static logoutUser = asyncHandler(async (req, res, next) => {
-    res.clearCookie('jwt', {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
-    res.status(200).json({
-      success: true,
-      message: 'User logged out successfully',
-    });
+  static logout = asyncHandler(async (req, res) => {
+    res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'none' });
+    res
+      .status(200)
+      .json({ success: true, message: 'User logged out successfully' });
   });
 }
 

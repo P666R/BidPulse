@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,18 +24,33 @@ enum Status {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
+  id             String           @id @default(uuid())
   username       String           @unique
   password       String
   email          String           @unique
   role           Role             @default(user)
+  isEmailVerified Boolean         @default(false)
   createdAt      DateTime         @default(now())
   Bids           Bid[]
   Notifications  Notification[]
+  verifyResetTokens VerifyResetToken[]
+
+  @@index([username])
+  @@index([email])
+}
+
+model VerifyResetToken {
+  id            String            @id @default(uuid()) 
+  userId        String
+  token         String
+  createdAt     DateTime          @default(now())
+  user          User              @relation(fields: [userId], references: [id])
+
+  @@unique([userId, token])
 }
 
 model Item {
-  id             Int              @id @default(autoincrement())
+  id             String           @id @default(uuid())
   name           String
   description    String           @db.Text
   startingPrice  Decimal          @db.Decimal(10, 2)
@@ -39,32 +60,31 @@ model Item {
   endTime        DateTime
   createdAt      DateTime         @default(now())
   Bids           Bid[]
+
+  @@index([name])
 }
 
 model Bid {
-  id            Int               @id @default(autoincrement())
-  itemId        Int
-  userId        Int
+  id            String            @id @default(uuid())
+  itemId        String
+  userId        String
   bidAmount     Decimal
   createdAt     DateTime          @default(now())
   user          User              @relation(fields: [userId], references: [id])
   item          Item              @relation(fields: [itemId], references: [id])
+
+  @@index([userId])
+  @@index([itemId])
 }
 
 model Notification {
-  id            Int               @id @default(autoincrement())
-  userId        Int
+  id            String            @id @default(uuid())
+  userId        String
   message       String
   isRead        Boolean           @default(false)
   createdAt     DateTime          @default(now())
   user          User              @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([isRead])
 }
-
-// Application-Level Handling:
-//async createItem(userId, data) {
-//  data.current_price = data.starting_price;
-//  data.user_id = userId;
-// return await this.itemRepository.createItem(data);
-//}
-
-

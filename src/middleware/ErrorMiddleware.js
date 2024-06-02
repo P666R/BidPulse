@@ -1,22 +1,50 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import AppError from '../helpers/AppError.js';
 
-export const errorHandler = (err, req, res, next) => {
-  let statusCode = res.statusCode ? res.statusCode : 500;
-
-  if (err instanceof PrismaClientKnownRequestError) {
-    statusCode = 400;
+const sendErrorDevelopment = (err, req, res) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack,
+    });
   }
 
-  res.status(statusCode).json({
-    success: false,
-    message: err.message || err.errors[0].message || 'Internal Server Error',
-    statusCode,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-  });
+  console.error('ERROR:', err);
+  res.status(err.statusCode).send('Something went wrong');
+};
+
+const sendErrorProduction = (err, req, res) => {
+  if (req.originalUrl.startsWith('/api')) {
+    if (err.isOperational) {
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message,
+      });
+    }
+
+    console.error('ERROR:', err);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Something went very wrong',
+    });
+  }
+
+  console.error('ERROR:', err);
+  res.status(err.statusCode).send('Something went very wrong');
 };
 
 export const notFound = (req, res, next) => {
-  const error = new Error(`Not Found - ${req.originalUrl}`);
-  res.status(404);
-  next(error);
+  next(new AppError(`Not Found - ${req.originalUrl}`, 404));
+};
+
+export const errorHandler = (err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  if (process.env.NODE_ENV === 'development') {
+    sendErrorDevelopment(err, req, res);
+  } else if (process.env.NODE_ENV === 'production') {
+    sendErrorProduction(err, req, res);
+  }
 };

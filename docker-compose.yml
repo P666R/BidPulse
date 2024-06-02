@@ -42,6 +42,15 @@ services:
     networks:
       - bidding-platform-network
 
+  mailhog:
+    container_name: bidding-platform-mailhog
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    networks:
+      - bidding-platform-network
+
 volumes:
   db_data:
 

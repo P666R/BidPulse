@@ -42,6 +42,29 @@ export const loginSchema = z.object({
   password: passwordSchema,
 });
 
+// Resend verification email schema
+export const resendEmailSchema = z.object({
+  email: emailSchema,
+});
+
+// Reset password request schema
+export const resetPasswordRequestSchema = z.object({
+  email: emailSchema,
+});
+
+// Reset password schema
+export const resetPasswordSchema = z.object({
+  password: passwordSchema,
+  // emailToken: z.string().min(1, { message: 'Email token is required' }),
+  // userId: z.string().min(1, { message: 'User ID is required' }),
+});
+
+// Verify email schema
+export const verifyEmailSchema = z.object({
+  emailToken: z.string().min(1, { message: 'Email token is required' }),
+  userId: z.string().min(1, { message: 'User ID is required' }),
+});
+
 // Item description validation schema
 const itemDescriptionSchema = z
   .string()
@@ -106,7 +129,7 @@ export const bidSchema = z.object({
 // Request body validation middleware
 export const validateRequestBody = (schema) => async (req, res, next) => {
   try {
-    await schema.parse(req.body);
+    req.body = await schema.parse(req.body);
     next();
   } catch (error) {
     const errorMessage = error.errors[0].message;
@@ -123,6 +146,18 @@ export const validateQueryParams = (schema) => async (req, res, next) => {
   } catch (error) {
     const errorMessage = error.errors[0].message;
     systemLogs.error(`Invalid query parameters: ${errorMessage}`);
+    res.status(400).json({ success: false, message: errorMessage });
+  }
+};
+
+// URL parameters validation middleware
+export const validateParams = (schema) => async (req, res, next) => {
+  try {
+    req.params = await schema.parse(req.params);
+    next();
+  } catch (error) {
+    const errorMessage = error.errors[0].message;
+    systemLogs.error(`Invalid URL parameters: ${errorMessage}`);
     res.status(400).json({ success: false, message: errorMessage });
   }
 };
