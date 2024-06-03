@@ -37,8 +37,10 @@ CREATE TABLE `Item` (
     `status` ENUM('active', 'ended') NOT NULL DEFAULT 'active',
     `endTime` DATETIME(3) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `owner` VARCHAR(191) NOT NULL,
 
     INDEX `Item_name_idx`(`name`),
+    INDEX `Item_owner_idx`(`owner`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -70,6 +72,9 @@ CREATE TABLE `Notification` (
 
 -- AddForeignKey
 ALTER TABLE `VerifyResetToken` ADD CONSTRAINT `VerifyResetToken_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Item` ADD CONSTRAINT `Item_owner_fkey` FOREIGN KEY (`owner`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Bid` ADD CONSTRAINT `Bid_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

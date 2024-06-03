@@ -3,15 +3,21 @@ import AppError from '../helpers/AppError.js';
 
 const ROLES = { USER, ADMIN };
 
-const checkRole = (allowedRole) => (req, res, next) => {
-  const hasRole = (req.user && req.user.role === allowedRole) ?? false;
+const checkRole =
+  (...allowedRole) =>
+  (req, res, next) => {
+    console.log(allowedRole);
+    console.log(req.user.role);
+    const hasRole =
+      (req.user && req.user.role && allowedRole.includes(req.user.role)) ??
+      false;
 
-  if (!hasRole) {
-    throw new AppError('You are forbidden to perform this action', 403);
-  }
+    if (!hasRole) {
+      next(new AppError('You are forbidden to perform this action', 403));
+    }
 
-  next();
-};
+    next();
+  };
 
 const role = { ROLES, checkRole };
 

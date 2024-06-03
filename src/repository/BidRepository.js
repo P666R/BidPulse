@@ -5,7 +5,7 @@ class BidRepository {
     return prisma.bid.create({ data });
   }
 
-  static async getBidsByItem(itemId) {
+  static async getAllBids(itemId) {
     return prisma.bid.findMany({ where: { itemId } });
   }
 }

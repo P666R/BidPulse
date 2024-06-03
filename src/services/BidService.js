@@ -1,12 +1,12 @@
 import BidRepository from '../repository/BidRepository.js';
 
 class BidService {
-  static async createBid(userId, data) {
-    return BidRepository.createBid({ ...data, userId });
+  static async createBid(itemId, userId, bidAmount) {
+    return BidRepository.createBid({ itemId, userId, bidAmount });
   }
 
-  static async getBidsByItem(itemId) {
-    return BidRepository.getBidsByItem(itemId);
+  static async getAllBids(itemId) {
+    return BidRepository.getAllBids(itemId);
   }
 }
 

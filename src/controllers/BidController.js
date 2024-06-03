@@ -3,7 +3,12 @@ import BidService from '../services/BidService.js';
 
 class BidController {
   static createBid = asyncHandler(async (req, res, next) => {
-    const bid = await BidService.createBid(req.user.id, req.body);
+    const { bidAmount } = req.body;
+    const bid = await BidService.createBid(
+      req.params.itemId,
+      req.user.id,
+      bidAmount,
+    );
     res.status(201).json({
       success: true,
       data: {
@@ -12,8 +17,8 @@ class BidController {
     });
   });
 
-  static getBidsByItem = asyncHandler(async (req, res, next) => {
-    const bids = await BidService.getBidsByItem(req.params.itemId);
+  static getAllBids = asyncHandler(async (req, res, next) => {
+    const bids = await BidService.getAllBids(req.params.itemId);
     res.status(200).json({
       success: true,
       data: {

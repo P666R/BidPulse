@@ -102,6 +102,7 @@ export const itemSchema = z.object({
   currentPrice: startingPriceSchema.optional(),
   endTime: endTimeSchema,
   imageUrl: z.string().optional(),
+  owner: z.string().optional(),
 });
 
 // Item update validation schema

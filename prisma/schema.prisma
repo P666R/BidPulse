@@ -13,27 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  user
-  admin
-}
-
 enum Status {
   active
   ended
 }
 
+enum Role {
+  user
+  admin
+}
+
 model User {
-  id             String           @id @default(uuid())
-  username       String           @unique
-  password       String
-  email          String           @unique
-  role           Role             @default(user)
-  isEmailVerified Boolean         @default(false)
-  createdAt      DateTime         @default(now())
-  Bids           Bid[]
-  Notifications  Notification[]
+  id                String           @id @default(uuid())
+  username          String           @unique
+  password          String
+  email             String           @unique
+  role              Role             @default(user)
+  isEmailVerified   Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  Bids              Bid[]
+  Notifications     Notification[]
   verifyResetTokens VerifyResetToken[]
+  Items             Item[]          
 
   @@index([username])
   @@index([email])
@@ -59,9 +60,12 @@ model Item {
   status         Status           @default(active)
   endTime        DateTime
   createdAt      DateTime         @default(now())
+  owner          String           
+  user           User             @relation(fields: [owner], references: [id])
   Bids           Bid[]
 
   @@index([name])
+  @@index([owner])
 }
 
 model Bid {

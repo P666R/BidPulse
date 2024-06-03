@@ -2,6 +2,7 @@ import { z } from 'zod';
 import express from 'express';
 import role from '../middleware/RoleMiddleware.js';
 import checkAuth from '../middleware/AuthMiddleware.js';
+import BidController from '../controllers/BidController.js';
 import ItemController from '../controllers/ItemController.js';
 import {
   validateQueryParams,
@@ -11,12 +12,10 @@ import {
 
 const router = express.Router();
 
-router.use(checkAuth);
-
 router
   .route('/')
   .get(validateQueryParams(queryItemSchema), ItemController.getAllItems)
-  .post(role.checkRole(role.ROLES.ADMIN), ItemController.createItem);
+  .post(checkAuth, ItemController.createItem);
 
 router
   .route('/:id')
@@ -25,14 +24,21 @@ router
     ItemController.getItem,
   )
   .put(
-    role.checkRole(role.ROLES.ADMIN),
+    checkAuth,
+    role.checkRole(role.ROLES.ADMIN, role.ROLES.USER),
     validateParams(z.object({ id: z.string().uuid() })),
     ItemController.updateItem,
   )
   .delete(
-    role.checkRole(role.ROLES.ADMIN),
+    checkAuth,
+    role.checkRole(role.ROLES.ADMIN, role.ROLES.USER),
     validateParams(z.object({ id: z.string().uuid() })),
     ItemController.deleteItem,
   );
+
+router
+  .route('/:itemId/bids')
+  .get(BidController.getAllBids)
+  .post(checkAuth, BidController.createBid);
 
 export default router;

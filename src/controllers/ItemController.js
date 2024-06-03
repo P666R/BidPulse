@@ -10,7 +10,9 @@ class ItemController {
     upload.single('image'),
     asyncHandler(async (req, res, next) => {
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-      const formData = imageUrl ? { ...req.body, imageUrl } : req.body;
+      const formData = imageUrl
+        ? { ...req.body, owner: req.user.id, imageUrl }
+        : { ...req.body, owner: req.user.id };
 
       const validationResult = itemSchema.safeParse(formData);
       if (!validationResult.success) {
@@ -63,6 +65,7 @@ class ItemController {
 
       const item = await ItemService.updateItem(
         req.params.id,
+        req.user,
         validationResult.data,
       );
       res.status(200).json({
@@ -73,7 +76,7 @@ class ItemController {
   ];
 
   static deleteItem = asyncHandler(async (req, res, next) => {
-    await ItemService.deleteItem(req.params.id);
+    await ItemService.deleteItem(req.params.id, req.user);
     res.status(204).json({
       status: 'success',
       data: null,
