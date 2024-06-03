@@ -11,6 +11,7 @@
      - 📄 [combined\-2024\-05\-31.log](logs/combined-2024-05-31.log)
      - 📄 [combined\-2024\-06\-01.log](logs/combined-2024-06-01.log)
      - 📄 [combined\-2024\-06\-02.log](logs/combined-2024-06-02.log)
+     - 📄 [combined\-2024\-06\-03.log](logs/combined-2024-06-03.log)
      - 📄 [error.log](logs/error.log)
      - 📄 [exception.log](logs/exception.log)
      - 📄 [rejections.log](logs/rejections.log)
@@ -19,10 +20,12 @@
    - 📄 [package.json](package.json)
    - 📂 __prisma__
      - 📂 __migrations__
-       - 📂 __20240602041208\_init__
-         - 📄 [migration.sql](prisma/migrations/20240602041208_init/migration.sql)
+       - 📂 __20240603113930\_init__
+         - 📄 [migration.sql](prisma/migrations/20240603113930_init/migration.sql)
        - 📄 [migration\_lock.toml](prisma/migrations/migration_lock.toml)
      - 📄 [schema.prisma](prisma/schema.prisma)
+   - 📂 __public__
+     - 📄 [favicon.ico](public/favicon.ico)
    - 📂 __src__
      - 📂 __config__
        - 📄 [index.js](src/config/index.js)
@@ -49,7 +52,6 @@
        - 📄 [NotificationRepository.js](src/repository/NotificationRepository.js)
      - 📂 __routes__
        - 📄 [AuthRoutes.js](src/routes/AuthRoutes.js)
-       - 📄 [BidRoutes.js](src/routes/BidRoutes.js)
        - 📄 [ItemRoutes.js](src/routes/ItemRoutes.js)
        - 📄 [NotificationRoutes.js](src/routes/NotificationRoutes.js)
      - 📄 [server.js](src/server.js)
@@ -76,7 +78,9 @@
      - 📄 [item.test.js](tests/item.test.js)
      - 📄 [notification.test.js](tests/notification.test.js)
    - 📂 __uploads__
-     - 📄 [55573248\-af99\-42d2\-884d\-dbc5cb0f7443.jpeg](uploads/55573248-af99-42d2-884d-dbc5cb0f7443.jpeg)
-     - 📄 [702787f6\-83e6\-4d14\-92d9\-fe64bd2a28d7.jpeg](uploads/702787f6-83e6-4d14-92d9-fe64bd2a28d7.jpeg)
-     - 📄 [e37ec74c\-1460\-4ca8\-8a24\-2a500fdfada7.jpeg](uploads/e37ec74c-1460-4ca8-8a24-2a500fdfada7.jpeg)
+     - 📄 [1cb1e3b3\-268c\-4ced\-837d\-a4e89d8d3385.jpeg](uploads/1cb1e3b3-268c-4ced-837d-a4e89d8d3385.jpeg)
+     - 📄 [60a450e8\-ee7b\-4ab7\-9280\-0af8a28191cf.jpeg](uploads/60a450e8-ee7b-4ab7-9280-0af8a28191cf.jpeg)
+     - 📄 [7adb917d\-e14c\-4ac4\-9f19\-8e4e56e27b92.jpeg](uploads/7adb917d-e14c-4ac4-9f19-8e4e56e27b92.jpeg)
+     - 📄 [9cfe5191\-48ff\-4b29\-8eb4\-1567f3b2cc6a.jpeg](uploads/9cfe5191-48ff-4b29-8eb4-1567f3b2cc6a.jpeg)
+     - 📄 [bc628f8f\-c5bd\-4f4f\-948a\-1a1da77045c8.jpeg](uploads/bc628f8f-c5bd-4f4f-948a-1a1da77045c8.jpeg)
 

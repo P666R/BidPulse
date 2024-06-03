@@ -12,6 +12,7 @@ import path from 'path';
 
 import authRoutes from './routes/AuthRoutes.js';
 import itemRoutes from './routes/ItemRoutes.js';
+import notificationRoutes from './routes/NotificationRoutes.js';
 
 import BiddingSocket from './sockets/BiddingSocket.js';
 import { systemLogs, morganMiddleware } from './utils/Logger.js';
@@ -42,6 +43,7 @@ app.get('/api/v1/test', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/items', itemRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
