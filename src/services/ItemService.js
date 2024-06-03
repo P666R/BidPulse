@@ -1,4 +1,5 @@
 import ItemRepository from '../repository/ItemRepository.js';
+import AppError from '../helpers/AppError.js';
 
 class ItemService {
   static async createItem(itemData) {
@@ -6,20 +7,30 @@ class ItemService {
   }
 
   static async getItem(itemId) {
-    return ItemRepository.getItem(itemId);
+    const item = await ItemRepository.getItem(itemId);
+    if (!item) {
+      throw new AppError('Item not found', 404);
+    }
+    return item;
   }
 
   static async getAllItems(queryParams) {
-    const { search, status, page, limit } = queryParams;
-    return ItemRepository.getAllItems({ search, status, page, limit });
+    return ItemRepository.getAllItems(queryParams);
   }
 
   static async updateItem(itemId, itemData) {
-    return ItemRepository.updateItem(itemId, itemData);
+    const item = await ItemRepository.updateItem(itemId, itemData);
+    if (!item) {
+      throw new AppError('Item not found', 404);
+    }
+    return item;
   }
 
   static async deleteItem(itemId) {
-    return ItemRepository.deleteItem(itemId);
+    const item = await ItemRepository.deleteItem(itemId);
+    if (!item) {
+      throw new AppError('Item not found', 404);
+    }
   }
 }
 

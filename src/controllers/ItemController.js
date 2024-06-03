@@ -1,4 +1,7 @@
 import asyncHandler from 'express-async-handler';
+import AppError from '../helpers/AppError.js';
+import { systemLogs } from '../utils/Logger.js';
+import { itemSchema, updateItemSchema } from '../utils/Validator.js';
 import ItemService from '../services/ItemService.js';
 import upload from '../middleware/MulterMiddleware.js';
 
@@ -7,15 +10,23 @@ class ItemController {
     upload.single('image'),
     asyncHandler(async (req, res, next) => {
       const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      const formData = imageUrl ? { ...req.body, imageUrl } : req.body;
 
-      req.body = { ...req.body, imageUrl };
+      const validationResult = itemSchema.safeParse(formData);
+      if (!validationResult.success) {
+        const errorDetails = validationResult.error.errors
+          .map((err) => err.message)
+          .join(', ');
+        systemLogs.error(`Invalid query parameters: ${errorDetails}`);
+        return next(
+          new AppError(`Invalid query parameters: ${errorDetails}`, 400),
+        );
+      }
 
-      const item = await ItemService.createItem(req.body);
+      const item = await ItemService.createItem(validationResult.data);
       res.status(201).json({
-        success: true,
-        data: {
-          item,
-        },
+        status: 'success',
+        data: { item },
       });
     }),
   ];
@@ -23,36 +34,50 @@ class ItemController {
   static getItem = asyncHandler(async (req, res, next) => {
     const item = await ItemService.getItem(req.params.id);
     res.status(200).json({
-      success: true,
-      data: {
-        item,
-      },
+      status: 'success',
+      data: { item },
     });
   });
 
   static getAllItems = asyncHandler(async (req, res, next) => {
     const items = await ItemService.getAllItems(req.query);
     res.status(200).json({
-      success: true,
-      data: {
-        items,
-      },
+      status: 'success',
+      data: { items },
     });
   });
 
-  static updateItem = asyncHandler(async (req, res, next) => {
-    const item = await ItemService.updateItem(req.params.id, req.body);
-    res.status(200).json({
-      success: true,
-      data: {
-        item,
-      },
-    });
-  });
+  static updateItem = [
+    upload.single('image'),
+    asyncHandler(async (req, res, next) => {
+      const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+      const formData = imageUrl ? { ...req.body, imageUrl } : req.body;
+
+      const validationResult = updateItemSchema.safeParse(formData);
+      if (!validationResult.success) {
+        const errorDetails = validationResult.error.errors
+          .map((err) => err.message)
+          .join(', ');
+        throw new AppError(`Invalid request body: ${errorDetails}`, 400);
+      }
+
+      const item = await ItemService.updateItem(
+        req.params.id,
+        validationResult.data,
+      );
+      res.status(200).json({
+        status: 'success',
+        data: { item },
+      });
+    }),
+  ];
 
   static deleteItem = asyncHandler(async (req, res, next) => {
     await ItemService.deleteItem(req.params.id);
-    res.status(204).send();
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
   });
 }
 

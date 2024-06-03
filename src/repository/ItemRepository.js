@@ -27,13 +27,11 @@ class ItemRepository {
       where.status = status;
     }
 
-    const items = await prisma.item.findMany({
+    return prisma.item.findMany({
       where,
       take: limit,
       skip: (page - 1) * limit,
     });
-
-    return items;
   }
 
   static async updateItem(itemId, data) {
